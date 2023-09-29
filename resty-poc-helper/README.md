@@ -46,10 +46,10 @@ The http request will served by requestHandler methods. This simple example show
 ```lua
 requestHandler = { 
 	get = function(r)
-		return r.param
+		return {r.param}
 	end,
 	post = function(r)
-		return params=r.param,body=r.data
+		return {params=r.param,body=r.data}
 	end
 }
 ```
@@ -128,7 +128,6 @@ $ curl -X POST http://localhost:8888/api/test/test/333 -d hello=world
 /api/test/test_db.lua - database query result test 
 
 ```lua
-local json = require "cjson"
 local testDB = require "api.test.common.db"
 local function db_test(param)
 	return testDB.query(string.format("SELECT * FROM users where firstname='%s'", tostring(param.firstname)))
@@ -156,8 +155,6 @@ $ curl -H "Authorization: Bearer eyJoZWFkZXIiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2l
 ```
 
 ```lua
-local json = require "cjson"
-
 local result = { user={ id=33, name="John Doe", salary="12300" } }
 
 local function my_POC_result(data,payload)
