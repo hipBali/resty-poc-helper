@@ -23,13 +23,13 @@ luarocks install lua-resty-jwt
 - opm:
 
 ```
-get bungle/lua-resty-nettle
+opm get bungle/lua-resty-nettle
 ```
 
 - luarocks:
 
 ```
-install lua-resty-nettle
+luarocks install lua-resty-nettle
 ```
 
 - install from source:
