@@ -3,8 +3,8 @@ Openresty Rest Api POC builder helper
 
 **Requirements**
 - OpenResty®
-- lua-resty-jwt (for examples)
-- lua-resty-nettle (for examples)
+- lua-resty-jwt 
+- lua-resty-nettle
 
 **Create your first rest api response**
 
