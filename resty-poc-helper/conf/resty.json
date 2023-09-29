@@ -1,8 +1,0 @@
-{
-
-  "api/test/test":"api/test/test.lua",
-  "api/test/token":"api/test/test_token.lua",
-  "api/test/db":"api/test/test_db.lua",
-  "api/test/method":"api/test/test_method.lua"
-  
-}
