@@ -139,7 +139,7 @@ To generate token use the *make_token* script
 
 ```sh
 $ sh make_token.sh '{"username":"myUser","role":"myRole","minutes":1440}'
-$ curl -H "Authorization: Bearer eyJoZWFkZXIiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkiLCJkYXRhIjoiZXlKamNtVmhkR1ZmWkdGMFpTSTZJakl3TWpNdE1Ea3RNamxVTURFNk1UazZNVEVpTENKMWMyVnlibUZ0WlNJNkltMTVWWE5sY2lJc0luSnZiR1VpT2lKdGVWSnZiR1VpTENKMllXeHBaRjkxYm5ScGJDSTZJakl3TWpNdE1Ea3RNekJVTURFNk1UazZNVEVpZlE9PSIsInNpZ25hdHVyZSI6ImlHMURtd0NST3RIOUxBZGpSSmdBbzdXc2dUS1FJYytzdzU5VW95T1lFKzQ9In0=" http://localhost:8888/api/test/token
+$ curl -H "Authorization: Bearer eyJoZWFk...In0=" http://localhost:8888/api/test/token
 {"token":{"username":"myUser","valid_until":"2023-09-30T01:19:11","create_date":"2023-09-29T01:19:11","role":"myRole"}}
 ```
 
