@@ -4,10 +4,10 @@
 -- (c) 2023, github.com/hipBali/resty-poc-helper
 -- 
 
-local jwt_utils = require "lua.common.tokenutils"
+local jwt_utils = require "lua.token.utils"
 local validator = function()
 
-	local user_token = jwt_utils.checkToken(jwt_utils._SPRING_AUTH_KEY)
+	local user_token = jwt_utils.checkHeaderToken(jwt_utils._BEARER)
 	if user_token.valid_until then
 		local cur_date = os.date("%Y-%m-%dT%T")
 		local tok_date = os.date(user_token.valid_until)

@@ -1,10 +1,112 @@
 # resty-poc-helper
-Openresty Rest Api POC builder helper
+Openresty Rest Api POC builder helper.
 
-**Requirements**
+- working Rest API service creating within 10 minutes
+- modifying endpoint script without service restart
+- JWT token handling 
+
+## **Requirements**
+
 - OpenResty®
 - lua-resty-jwt 
-- lua-resty-nettle
+- [lua-resty-nettle]  (required for password handling) 
+
+*LUA-RESTY-JWT*
+
+- opm:
+
+```
+opm get SkyLothar/lua-resty-jwt
+```
+
+- luarocks: 
+
+```
+luarocks install lua-resty-jwt
+```
+
+*LUA-RESTY-NETTLE*
+
+- opm:
+
+```
+opm get bungle/lua-resty-nettle
+```
+
+- luarocks:
+
+```
+luarocks install lua-resty-nettle
+```
+
+- install from source:
+
+  ​	
+
+  ```
+  wget https://ftp.gnu.org/gnu/nettle/nettle-3.4.1.tar.gz
+  tar -zxf nettle-3.4.1.tar.gz
+  cd nettle-3.4.1
+  ./configure --prefix=/usr --enable-mini-gmp && make
+  make install 
+  ```
+
+
+## Configuration
+
+### conf/nginx-dev.conf
+
+This configuration file allows you to use Rest API calls without an access token. 
+
+```shell
+$ cd resty-poc-helper
+$ sh start.sh dev
+start resty-poc application with profile: dev
+
+$ sh stop.sh dev
+stop resty-poc application with profile: dev
+```
+
+### conf/nginx-release.conf
+
+This configuration file requires a valid JWT token in the request header to access Rest API endpoints. 
+
+```shell
+$ sh start.sh
+start resty-poc application with profile: release
+
+$ sh stop.sh
+stop resty-poc application with profile: release
+```
+
+## JWT tokens
+
+Creating tokens
+
+```lua
+local dateutils = require "lua.common.dateutils"
+local jwtutils = require "lua.common.tokenutils"
+local pload = {
+	valid_until = dateutils.addHours(2),
+    foo = "bar"
+}
+io.stdout:write(jwtutils.encode(pload,"Very_Secret_Key"))
+```
+
+Verifying tokens
+
+```lua
+pload = jwtutils.decode(jwt_token,"Very_Secret_Key")
+io.stdout:write(pload.valid_until)
+```
+
+Validating header tokens
+
+```lua
+local user_token = jwt_utils.checkHeaderToken(jwtutils._BEARER) -- or jwtutils._XACCES
+```
+
+## Usage
 
 **Create your first rest api response**
 
@@ -58,7 +160,7 @@ The request parameter is a lua table which contains the request parameters, body
 ```lua
 local params = r.param
 local body = r.data
-local payload = r.token -- if config is release
+local payload = r.token -- for release config only!
 ```
 
 At the development stage you'll need *lua/common/validate_token.lua* module to access payload data
@@ -76,7 +178,7 @@ requestHandler = {
 To generate token use the *make_token* script
 
 ```sh
-$ sh make_token.sh '{"username":"myUser","role":"myRole","minutes":1440}' 'http://localhost:8888/api/test/token'
+$ sh make_token.sh '{"username":"myUser","role":"myRole","minutes":1440}'
 $ curl -H "Authorization: Bearer eyJoZWFkZXIiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkiLCJkYXRhIjoiZXlKamNtVmhkR1ZmWkdGMFpTSTZJakl3TWpNdE1Ea3RNamxVTURFNk1UazZNVEVpTENKMWMyVnlibUZ0WlNJNkltMTVWWE5sY2lJc0luSnZiR1VpT2lKdGVWSnZiR1VpTENKMllXeHBaRjkxYm5ScGJDSTZJakl3TWpNdE1Ea3RNekJVTURFNk1UazZNVEVpZlE9PSIsInNpZ25hdHVyZSI6ImlHMURtd0NST3RIOUxBZGpSSmdBbzdXc2dUS1FJYytzdzU5VW95T1lFKzQ9In0=" http://localhost:8888/api/test/token
 {"token":{"username":"myUser","valid_until":"2023-09-30T01:19:11","create_date":"2023-09-29T01:19:11","role":"myRole"}}
 ```
@@ -120,7 +222,7 @@ requestHandler = {
 
 ```shell
 $ curl http://localhost:8888/api/test/method?name=john
-{"x":"john"}
+{"name":"john"}
 $ curl -X POST http://localhost:8888/api/test/test/333 -d hello=world
 {"body":"hello=world","params":{"id":"333"}}
 ```
@@ -143,16 +245,7 @@ requestHandler = {
 }
 ```
 
-**Typical 'POC' usage** - lua script
-
-```shell
-$ sh start.sh
-start resty-poc application with profile: release
-$  curl -X POST -H "Authorization: Bearer eyJoZWFkZXIiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkiLCJkYXRhIjoiZXlKamNtVmhkR1ZmWkdGMFpTSTZJakl3TWpNdE1Ea3RNamxVTURFNk1UazZNVEVpTENKMWMyVnlibUZ0WlNJNkltMTVWWE5sY2lJc0luSnZiR1VpT2lKdGVWSnZiR1VpTENKMllXeHBaRjkxYm5ScGJDSTZJakl3TWpNdE1Ea3RNekJVTURFNk1UazZNVEVpZlE9PSIsInNpZ25hdHVyZSI6ImlHMURtd0NST3RIOUxBZGpSSmdBbzdXc2dUS1FJYytzdzU5VW95T1lFKzQ9In0=" http://localhost:8888/api/poc/mypoc -d id=33
-{"error":"Invalid role","error_code":99}
-$ curl -H "Authorization: Bearer eyJoZWFkZXIiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkiLCJkYXRhIjoiZXlKamNtVmhkR1ZmWkdGMFpTSTZJakl3TWpNdE1Ea3RNamxVTURFNk1UazZNVEVpTENKMWMyVnlibUZ0WlNJNkltMTVWWE5sY2lJc0luSnZiR1VpT2lKdGVWSnZiR1VpTENKMllXeHBaRjkxYm5ScGJDSTZJakl3TWpNdE1Ea3RNekJVTURFNk1UazZNVEVpZlE9PSIsInNpZ25hdHVyZSI6ImlHMURtd0NST3RIOUxBZGpSSmdBbzdXc2dUS1FJYytzdzU5VW95T1lFKzQ9In0=" http://localhost:8888/api/poc/mypoc/33
-{"result":{"user":{"id":33,"salary":"12300","name":"John Doe"}}}
-```
+**Typical 'POC' usage** - lua script 
 
 ```lua
 local result = { user={ id=33, name="John Doe", salary="12300" } }
