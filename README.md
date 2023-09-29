@@ -9,7 +9,6 @@ Openresty Rest Api POC builder helper.
 
 - OpenResty®
 - lua-resty-jwt 
-- [lua-resty-nettle]  (required for password handling) 
 
 
 
