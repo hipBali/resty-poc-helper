@@ -7,12 +7,11 @@
 --
 -- curl -X WTF http://localhost:8888/api/test/method
 --
-local json = require "cjson"
 requestHandler = { 
 	get = function(r)
-		return json.encode(r.param)
+		return r.param
 	end,
 	post = function(r)
-		return json.encode{params=r.param, body=r.data}
+		return {params=r.param, body=r.data}
 	end
 }
