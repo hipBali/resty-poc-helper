@@ -44,13 +44,12 @@ $ curl http://localhost:8888/api/mytest
 
 The http request will served by requestHandler methods. This simple example shows how can you catch various http requests.
 ```lua
-local json = require "cjson"
 requestHandler = { 
 	get = function(r)
-		return json.encode(r.param)
+		return r.param
 	end,
 	post = function(r)
-		return json.encode{params=r.param,body=r.data}
+		return params=r.param,body=r.data
 	end
 }
 ```
