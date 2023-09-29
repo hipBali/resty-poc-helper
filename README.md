@@ -2,13 +2,13 @@
 Openresty minimal rest service for POC
 
 Requirements:
-----------------------------------------------------------------
+
 LUA-RESTY-JWT
 	opm: 
 		opm get SkyLothar/lua-resty-jwt
 	luarocks: 
 		luarocks install lua-resty-jwt
-----------------------------------------------------------------
+
 LUA-RESTY-NETTLE
 	opm:
 		get bungle/lua-resty-nettle
@@ -20,4 +20,3 @@ LUA-RESTY-NETTLE
 		cd nettle-3.4.1
 		./configure --prefix=/usr --enable-mini-gmp && make
 		make install 
-----------------------------------------------------------------
