@@ -108,13 +108,12 @@ $ curl http://localhost:8888/api/test/test?error=123
 /api/test/test_method.lua - test for GET and POST methods
 
 ```lua
-local json = require "cjson"
 requestHandler = { 
 	get = function(r)
-		return json.encode(r.param)
+		return {r.param}
 	end,
 	post = function(r)
-		return json.encode{params=r.param, body=r.data}
+		return{params=r.param, body=r.data}
 	end
 }
 ```
