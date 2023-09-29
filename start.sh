@@ -4,7 +4,6 @@
 # usage:
 # sh start.sh -- start application @dev
 # sh start.sh ${env} -- start application @${env}
-
 # examples:
 # sh start.sh prod -- use conf/nginx-prod.conf to start OpenResty
 # sh start.sh -- use conf/nginx-dev.conf to start OpenResty
@@ -17,5 +16,5 @@ else
 fi
 
 mkdir -p logs & mkdir -p tmp
-echo "start resty-poc application with profile: "${PROFILE}
+echo "start lor application with profile: "${PROFILE}
 nginx -p `pwd`/ -c conf/nginx-${PROFILE}.conf
