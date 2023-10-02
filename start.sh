@@ -2,17 +2,17 @@
 
 #####################################################################
 # usage:
-# sh start.sh -- start application @dev
+# sh start.sh -- start application @test
 # sh start.sh ${env} -- start application @${env}
 # examples:
-# sh start.sh prod -- use conf/nginx-prod.conf to start OpenResty
-# sh start.sh -- use conf/nginx-dev.conf to start OpenResty
+# sh start.sh dev -- use conf/nginx-dev.conf to start OpenResty
+# sh start.sh -- use conf/nginx-test.conf to start OpenResty
 #####################################################################
 
 if [ -n "$1" ];then
     PROFILE="$1"
 else
-    PROFILE="release"
+    PROFILE="test"
 fi
 
 mkdir -p logs & mkdir -p tmp

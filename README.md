@@ -27,16 +27,16 @@ $ sh stop.sh dev
 stop resty-poc application with profile: dev
 ```
 
-### conf/nginx-release.conf
+### conf/nginx-test.conf
 
-This configuration file requires a valid JWT token in the request header to access Rest API endpoints. 
+The default 'test' configuration file requires a valid JWT token in the request header to access Rest API endpoints. 
 
 ```shell
 $ sh start.sh
-start resty-poc application with profile: release
+start resty-poc application with profile: test
 
 $ sh stop.sh
-stop resty-poc application with profile: release
+stop resty-poc application with profile: test
 ```
 
 ## JWT tokens
